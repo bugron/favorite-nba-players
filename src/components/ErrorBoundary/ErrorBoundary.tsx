@@ -1,5 +1,7 @@
 //@ts-nocheck
+import classNames from "classnames";
 import React from "react";
+import styles from "./ErrorBoundary.module.css";
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,21 +23,8 @@ export class ErrorBoundary extends React.Component {
     }
 
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <h1
-          style={{
-            marginBottom: 0,
-          }}
-        >
+      <div className={classNames(styles.errorBoundary)}>
+        <h1 className={classNames(styles.errorHeader)}>
           Something went wrong 😭
         </h1>
         <p>Please, reload the page</p>

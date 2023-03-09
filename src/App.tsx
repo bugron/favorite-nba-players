@@ -7,7 +7,7 @@ import { PageTitle } from "./components/PageTitle/PageTitle";
 import "./App.css";
 import { useApi } from "./hooks/useApi";
 import { getPlayers } from "./api/players";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
 export interface Pagination {
   page: number;
