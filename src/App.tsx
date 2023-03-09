@@ -9,25 +9,18 @@ import { useApi } from "./hooks/useApi";
 import { getPlayers } from "./api/players";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
-export interface Pagination {
-  page: number;
-  per_page: number;
-  search?: string;
-}
-
 function App() {
-  const [pagination, setPagination] = useState({
-    page: 1,
-    per_page: 10,
-  });
   const [favoritePlayers, setFavoritePlayers] = useState<NBAPlayerItem[]>([]);
 
   const playersApi = useApi(getPlayers);
 
   useEffect(() => {
-    playersApi.request(pagination);
+    playersApi.request({
+      per_page: 10,
+      page: 1,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination]);
+  }, []);
 
   return (
     <div className="App">
@@ -35,13 +28,11 @@ function App() {
         <PageTitle />
         <div className="player-list-container">
           <AllNBAPlayerList
-            players={playersApi.data.data}
+            players={playersApi.data as any}
             setFavoritePlayers={setFavoritePlayers}
             setPlayers={playersApi.setData as any}
             loading={playersApi.loading}
-            setPagination={setPagination}
             requestPlayers={playersApi.request}
-            pagination={pagination}
           />
           <FavoriteNBAPlayerList
             players={favoritePlayers}
