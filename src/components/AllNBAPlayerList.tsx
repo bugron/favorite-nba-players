@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { Pagination } from "../App";
 import { constructReactKey } from "../utils/constructReactKey";
 import { EmptyListPlaceholder } from "./EmptyListPlaceholder/EmptyListPlaceholder";
@@ -8,6 +8,7 @@ import {
   NBAPlayerItem,
   NBAPlayerListItem,
 } from "./NBAPlayerListItem/NBAPlayerListItem";
+import debounce from "lodash.debounce";
 
 export interface AllNBAPlayerListProps {
   players: NBAPlayerItem[];
@@ -29,6 +30,23 @@ export const AllNBAPlayerList: FC<AllNBAPlayerListProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleChange = (e: any) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    handleSearch(term);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleSearch = useCallback(
+    debounce((value) => {
+      requestPlayers({
+        ...pagination,
+        search: value,
+      });
+    }, 500),
+    []
+  );
+
   return (
     <NBAPlayerList
       title={
@@ -39,14 +57,7 @@ export const AllNBAPlayerList: FC<AllNBAPlayerListProps> = ({
             placeholder="Search for a player..."
             className="list-search-input"
             value={searchTerm}
-            onChange={(e) => {
-              const term = e.target.value.toLowerCase();
-              setSearchTerm(term);
-              requestPlayers({
-                ...pagination,
-                search: term,
-              });
-            }}
+            onChange={handleChange}
           />
         </>
       }
