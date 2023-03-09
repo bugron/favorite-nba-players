@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { constructReactKey } from "../utils/constructReactKey";
+import { ColorPicker } from "./ColorPicker/ColorPicker";
 import { EmptyListPlaceholder } from "./EmptyListPlaceholder/EmptyListPlaceholder";
 import { NBAPlayerList } from "./NBAPlayerList/NBAPlayerList";
 import {
@@ -17,34 +18,48 @@ export const FavoriteNBAPlayerList: FC<FavoriteNBAPlayerListProps> = ({
   players,
   setFavoritePlayers,
   setPlayers,
-}) => (
-  <NBAPlayerList title={<p className="list-title">Favorite NBA Players</p>}>
-    {players.length ? (
-      players.map((player) => (
-        <NBAPlayerListItem
-          key={constructReactKey(player)}
-          player={player}
-          onClick={() => {
-            setPlayers((players) => ({
-              data: players.data.find(
-                (nbaPlayer) =>
-                  constructReactKey(nbaPlayer) === constructReactKey(player)
-              )
-                ? players.data
-                : [...players.data, player],
-            }));
-            setFavoritePlayers((players) =>
-              players.filter(
-                (nbaPlayer) =>
-                  constructReactKey(nbaPlayer) !== constructReactKey(player)
-              )
-            );
-          }}
-          filled
-        />
-      ))
-    ) : (
-      <EmptyListPlaceholder />
-    )}
-  </NBAPlayerList>
-);
+}) => {
+  const [backgroundColor, setBackGroundColor] = useState("#3d4148");
+
+  return (
+    <NBAPlayerList
+      style={{
+        backgroundColor,
+      }}
+      title={
+        <div>
+          <p className="list-title">Favorite NBA Players</p>
+          <ColorPicker color={backgroundColor} setColor={setBackGroundColor} />
+        </div>
+      }
+    >
+      {players.length ? (
+        players.map((player) => (
+          <NBAPlayerListItem
+            key={constructReactKey(player)}
+            player={player}
+            onClick={() => {
+              setPlayers((players) => ({
+                data: players.data.find(
+                  (nbaPlayer) =>
+                    constructReactKey(nbaPlayer) === constructReactKey(player)
+                )
+                  ? players.data
+                  : [...players.data, player],
+              }));
+              setFavoritePlayers((players) =>
+                players.filter(
+                  (nbaPlayer) =>
+                    constructReactKey(nbaPlayer) !== constructReactKey(player)
+                )
+              );
+            }}
+            filled
+          />
+        ))
+      ) : (
+        <EmptyListPlaceholder />
+      )}
+    </NBAPlayerList>
+  );
+};
