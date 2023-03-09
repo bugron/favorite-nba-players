@@ -26,7 +26,12 @@ export const FavoriteNBAPlayerList: FC<FavoriteNBAPlayerListProps> = ({
           player={player}
           onClick={() => {
             setPlayers((players) => ({
-              data: [...players.data, player],
+              data: players.data.find(
+                (nbaPlayer) =>
+                  constructReactKey(nbaPlayer) === constructReactKey(player)
+              )
+                ? players.data
+                : [...players.data, player],
             }));
             setFavoritePlayers((players) =>
               players.filter(
