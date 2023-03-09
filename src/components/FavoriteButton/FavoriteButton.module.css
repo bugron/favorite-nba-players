@@ -1,0 +1,15 @@
+.starButton {
+  border: 0;
+  border-radius: 0.5em;
+  color: transparent;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.starButton:hover {
+  background-color: #343028;
+}
+
+.starButton:active {
+  background-color: #7c835f;
+}

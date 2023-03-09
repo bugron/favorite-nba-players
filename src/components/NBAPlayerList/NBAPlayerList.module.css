@@ -1,0 +1,19 @@
+.list {
+  background-color: #3d4148 !important;
+  border-radius: 0.5em;
+  min-height: 10em;
+  max-height: 50vh;
+  max-width: 15em;
+  overflow-y: auto;
+  width: 100%;
+  padding: 0.5em;
+  padding-top: 0;
+}
+
+.list .listTitleContainer {
+  position: sticky;
+  top: 0;
+  background-color: #3d4148;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}

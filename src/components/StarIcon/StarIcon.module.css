@@ -1,0 +1,10 @@
+.starIcon {
+  width: 24px;
+  height: 24px;
+  stroke: gold;
+  fill: transparent;
+}
+
+.starIconFilled {
+  fill: gold;
+}

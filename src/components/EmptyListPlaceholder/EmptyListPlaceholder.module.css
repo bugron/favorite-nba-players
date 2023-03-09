@@ -1,0 +1,8 @@
+.emptyListIcon {
+  width: 4em;
+  height: 4em;
+}
+
+.emptyListIcon + p {
+  margin-bottom: 0.5em;
+}

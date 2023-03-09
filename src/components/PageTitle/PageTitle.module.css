@@ -1,0 +1,13 @@
+.title {
+  margin-top: 2em;
+}
+
+.title .logo {
+  height: 4em;
+  pointer-events: none;
+}
+
+.title .headerText {
+  margin: 0;
+  font-weight: bold;
+}
