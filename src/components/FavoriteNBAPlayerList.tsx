@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { constructReactKey } from "../utils/constructReactKey";
 import { EmptyListPlaceholder } from "./EmptyListPlaceholder/EmptyListPlaceholder";
 import { NBAPlayerList } from "./NBAPlayerList/NBAPlayerList";
 import {
@@ -9,7 +10,7 @@ import {
 export interface FavoriteNBAPlayerListProps {
   players: NBAPlayerItem[];
   setFavoritePlayers: React.Dispatch<React.SetStateAction<NBAPlayerItem[]>>;
-  setPlayers: React.Dispatch<React.SetStateAction<NBAPlayerItem[]>>;
+  setPlayers: React.Dispatch<React.SetStateAction<{ data: NBAPlayerItem[] }>>;
 }
 
 export const FavoriteNBAPlayerList: FC<FavoriteNBAPlayerListProps> = ({
@@ -21,12 +22,17 @@ export const FavoriteNBAPlayerList: FC<FavoriteNBAPlayerListProps> = ({
     {players.length ? (
       players.map((player) => (
         <NBAPlayerListItem
-          key={player.id}
+          key={constructReactKey(player)}
           player={player}
           onClick={() => {
-            setPlayers((players) => [...players, player]);
+            setPlayers((players) => ({
+              data: [...players.data, player],
+            }));
             setFavoritePlayers((players) =>
-              players.filter((nbaPlayer) => nbaPlayer.id !== player.id)
+              players.filter(
+                (nbaPlayer) =>
+                  constructReactKey(nbaPlayer) !== constructReactKey(player)
+              )
             );
           }}
           filled

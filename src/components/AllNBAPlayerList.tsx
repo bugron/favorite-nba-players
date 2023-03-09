@@ -1,5 +1,8 @@
 import { FC, useState } from "react";
+import { Pagination } from "../App";
+import { constructReactKey } from "../utils/constructReactKey";
 import { EmptyListPlaceholder } from "./EmptyListPlaceholder/EmptyListPlaceholder";
+import { Loader } from "./Loader/Loader";
 import { NBAPlayerList } from "./NBAPlayerList/NBAPlayerList";
 import {
   NBAPlayerItem,
@@ -9,21 +12,22 @@ import {
 export interface AllNBAPlayerListProps {
   players: NBAPlayerItem[];
   setFavoritePlayers: React.Dispatch<React.SetStateAction<NBAPlayerItem[]>>;
-  setPlayers: React.Dispatch<React.SetStateAction<NBAPlayerItem[]>>;
+  setPlayers: React.Dispatch<React.SetStateAction<{ data: NBAPlayerItem[] }>>;
+  setPagination: React.Dispatch<React.SetStateAction<Pagination>>;
+  pagination: Pagination;
+  requestPlayers: (...args: any) => Promise<any>;
+  loading?: boolean;
 }
 
 export const AllNBAPlayerList: FC<AllNBAPlayerListProps> = ({
   players,
   setFavoritePlayers,
   setPlayers,
+  loading,
+  requestPlayers,
+  pagination,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredPlayers = players.filter(
-    (player) =>
-      player.first_name.toLowerCase().includes(searchTerm) ||
-      player.last_name.toLowerCase().includes(searchTerm)
-  );
 
   return (
     <NBAPlayerList
@@ -35,26 +39,40 @@ export const AllNBAPlayerList: FC<AllNBAPlayerListProps> = ({
             placeholder="Search for a player..."
             className="list-search-input"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              const term = e.target.value.toLowerCase();
+              setSearchTerm(term);
+              requestPlayers({
+                ...pagination,
+                search: term,
+              });
+            }}
           />
         </>
       }
     >
-      {filteredPlayers.length ? (
-        filteredPlayers.map((player) => (
-          <NBAPlayerListItem
-            key={player.id}
-            player={player}
-            onClick={() => {
-              setFavoritePlayers((players) => [...players, player]);
-              setPlayers((players) =>
-                players.filter((nbaPlayer) => nbaPlayer.id !== player.id)
-              );
-            }}
-          />
-        ))
+      {!loading ? (
+        players?.length ? (
+          players.map((player) => (
+            <NBAPlayerListItem
+              key={constructReactKey(player)}
+              player={player}
+              onClick={() => {
+                setFavoritePlayers((players) => [...players, player]);
+                setPlayers({
+                  data: players.filter(
+                    (nbaPlayer) =>
+                      constructReactKey(nbaPlayer) !== constructReactKey(player)
+                  ),
+                });
+              }}
+            />
+          ))
+        ) : (
+          <EmptyListPlaceholder />
+        )
       ) : (
-        <EmptyListPlaceholder />
+        <Loader />
       )}
     </NBAPlayerList>
   );
