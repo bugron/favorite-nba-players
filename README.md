@@ -1,3 +1,15 @@
+# Implemented functionality
+- [x] A UI with two lists
+- [x] The left list renders NBA players
+- [x] The right list renders favorite NBA players
+- [x] It is possible to search for a player name
+- [x] Pagination is implemented
+- [x] The background color of the favorite players list can be changed
+- [x] The page is mobile friendly
+- [x] All usages mentioned in the task definitions are covered
+- [ ] Data persistense/caching is implemented
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
